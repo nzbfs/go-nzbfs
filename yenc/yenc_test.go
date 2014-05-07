@@ -1,4 +1,4 @@
-// 
+//
 package yenc
 
 import "testing"
@@ -8,7 +8,7 @@ func TestDecode(t *testing.T) {
 
 	var decoded = Decode(data)
 
-	if (data != decoded) {
+	if data != decoded {
 		t.Errorf("Decode(%s) != %s", data, decoded)
 	}
 }
