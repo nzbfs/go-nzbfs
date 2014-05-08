@@ -1,14 +1,26 @@
-//
+// Testing for the inline yenc encoder
 package yenc
 
-import "testing"
+import (
+	"fmt"
+	"io/ioutil"
+	"testing"
+)
 
 func TestDecode(t *testing.T) {
-	data := "Some data"
+	var fileBytes []byte
+	var _ error
 
-	var decoded = Decode(data)
+	fileBytes, _ = ioutil.ReadFile("singlepart_test_data_only.yenc")
+	//fileBytes, _ = ioutil.ReadFile("multipart_test1.yenc")
 
-	if data != decoded {
-		t.Errorf("Decode(%s) != %s", data, decoded)
+	var decoded = Decode(fileBytes)
+	fmt.Print("length of fileBytes is ", len(fileBytes), "\n")
+	fmt.Print("length of decoded is ", len(decoded), "\n")
+
+	for x := 0; x < len(decoded); x++ {
+		fmt.Printf("%c", decoded[x])
 	}
+
+	ioutil.WriteFile("singlepart_test1.txt", decoded, 0644)
 }
