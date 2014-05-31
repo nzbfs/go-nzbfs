@@ -3,12 +3,23 @@
 package main
 
 import (
-	"fmt"
+	"log"
+
+	"bazil.org/fuse"
+	"bazil.org/fuse/fs"
+
+        "github.com/nzbfs/go-nzbfs/nzbfs"
 )
 
 func main() {
-	// read from stdin
+	conn, err := fuse.Mount("mnt")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer conn.Close()
 
-	// write to stdout
-	fmt.Println("Hello World!")
+	err = fs.Serve(conn, &nzbfs.NzbFS{"nzbdb"})
+	if err != nil {
+		log.Fatal(err)
+	}
 }
