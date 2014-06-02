@@ -8,7 +8,7 @@ import (
 	"bazil.org/fuse"
 	"bazil.org/fuse/fs"
 
-        "github.com/nzbfs/go-nzbfs/nzbfs"
+	"github.com/nzbfs/go-nzbfs/nzbfs"
 )
 
 func main() {
