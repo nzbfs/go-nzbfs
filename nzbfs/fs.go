@@ -3,7 +3,6 @@ package nzbfs
 import (
 	"log"
 	"os"
-	"path"
 	"syscall"
 	"time"
 
@@ -23,43 +22,6 @@ func (f *NzbFS) Root() (fs.Node, fuse.Error) {
 	}
 	stat.Mode = uint32(os.ModeDir | 0777)
 	return &Dir{stat, f.DBPath}, err
-}
-
-type Dir struct {
-	stat    syscall.Stat_t
-	dirpath string
-}
-
-func (d *Dir) Attr() fuse.Attr {
-	return statToAttr(d.stat)
-}
-
-func (d *Dir) Lookup(relpath string, intr fs.Intr) (fs.Node, fuse.Error) {
-	fullpath := path.Join(d.dirpath, relpath)
-
-	var stat syscall.Stat_t
-	err := syscall.Lstat(fullpath, &stat)
-	if err != nil {
-		return nil, err
-	}
-
-	if (stat.Mode & syscall.S_IFDIR) != 0 {
-		return &Dir{stat, fullpath}, err
-	}
-	if (stat.Mode & syscall.S_IFREG) != 0 {
-		return &File{stat, fullpath}, err
-	}
-
-	return nil, fuse.ENOTSUP
-}
-
-type File struct {
-	stat syscall.Stat_t
-	path string
-}
-
-func (f *File) Attr() fuse.Attr {
-	return statToAttr(f.stat)
 }
 
 func statToAttr(stat syscall.Stat_t) fuse.Attr {
