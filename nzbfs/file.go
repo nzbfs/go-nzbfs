@@ -12,5 +12,5 @@ type File struct {
 }
 
 func (f *File) Attr() fuse.Attr {
-	return statToAttr(f.stat)
+	return attrFromStat(f.stat)
 }

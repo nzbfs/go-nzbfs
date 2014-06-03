@@ -15,7 +15,7 @@ type Dir struct {
 }
 
 func (d *Dir) Attr() fuse.Attr {
-	return statToAttr(d.stat)
+	return attrFromStat(d.stat)
 }
 
 func (d *Dir) Lookup(relpath string, intr fs.Intr) (fs.Node, fuse.Error) {
