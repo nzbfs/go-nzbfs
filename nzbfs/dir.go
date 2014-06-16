@@ -38,16 +38,16 @@ func (d *Dir) Lookup(relpath string, intr fs.Intr) (fs.Node, fuse.Error) {
 }
 
 func (d *Dir) Open(req *fuse.OpenRequest, resp *fuse.OpenResponse, intr fs.Intr) (fs.Handle, fuse.Error) {
-	fd, err := os.OpenFile(d.dirpath, int(req.Flags), 0777)
-	return &DirHandle{fd}, err
+	file, err := os.OpenFile(d.dirpath, int(req.Flags), 0777)
+	return &DirHandle{file}, err
 }
 
 type DirHandle struct {
-	fd *os.File
+	file *os.File
 }
 
 func (h *DirHandle) ReadDir(intr fs.Intr) ([]fuse.Dirent, fuse.Error) {
-	fileinfos, err := h.fd.Readdir(-1)
+	fileinfos, err := h.file.Readdir(-1)
 	dirents := make([]fuse.Dirent, len(fileinfos))
 	//var stat syscall.Stat_t
 	for i, fileinfo := range fileinfos {
